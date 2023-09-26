@@ -5,42 +5,121 @@
  */
 
 #include <behaviors.dtsi>
-#include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/ext_power.h>
+
+// Layer Aliases
+#define DEFAULT 0
+#define WINDOWS 1
+#define LOWER 2
+#define RAISE 3
+
+// Mod Tap Aliases
+#define CMD_BSP &mt LGUI BSPC
+#define SFT_ENT &mt LSHFT RET
+#define ALT_ESC &mt LALT ESC
+
+// Hold Tap Defines
+#define COPY &ht LG(C) LG(V)
+#define FIND &ht LG(A) LG(F)
+#define UNDO &ht LG(Y) LG(Z)
+#define W_COPY &ht LC(C) LC(V)
+#define W_FIND &ht LC(A) LC(F)
+#define W_UNDO &ht LC(Y) LC(Z)
+#define MSN_CTL &ht LCTL LC(UP)
+#define WIN_TSK &ht LGUI LG(TAB)
+#define CTL_BSP &ht LCTL BSPC
+
+// Modifiers
+#define SHFT_R LS(RIGHT)
+#define SHFT_L LS(LEFT)
+#define CT_SH_R LC(LS(RIGHT))
+#define CT_SH_L LC(LS(LEFT))
 
 / {
-    keymap {
-        compatible = "zmk,keymap";
+		behaviors {
+	    ht: hold_tap {
+	            compatible = "zmk,behavior-hold-tap";
+	            label = "HT";
+	            #binding-cells = <2>;
+	            tapping-term-ms = <250>;
+	            quick-tap-ms = <150>;
+	            flavor = "tap-preferred";
+	            bindings = <&kp>, <&kp>;
+	    };
+			pd: prev_desktop {
+							compatible = "zmk,behavior-mod-morph";
+							label = "PD";
+							#binding-cells = <0>;
+							bindings = <&kp H>, <&kp LEFT>;
+							mods = <(MOD_LCTL|MOD_RCTL)>;
+							keep-mods = <(MOD_LCTL)>;
+			};
+			nd: next_desktop {
+							compatible = "zmk,behavior-mod-morph";
+							label = "ND";
+							#binding-cells = <0>;
+							bindings = <&kp S>, <&kp RIGHT>;
+							mods = <(MOD_LCTL|MOD_RCTL)>;
+							keep-mods = <(MOD_LCTL)>;
+			};
+			pdw: prev_desktop_windows {
+							compatible = "zmk,behavior-mod-morph";
+							label = "PDW";
+							#binding-cells = <0>;
+							bindings = <&kp H>, <&kp LC(LEFT)>;
+							mods = <(MOD_LGUI|MOD_RGUI)>;
+							keep-mods = <(MOD_LGUI)>;
+			};
+			ndw: next_desktop_windows {
+							compatible = "zmk,behavior-mod-morph";
+							label = "NDW";
+							#binding-cells = <0>;
+							bindings = <&kp S>, <&kp LC(RIGHT)>;
+							mods = <(MOD_LGUI|MOD_RGUI)>;
+							keep-mods = <(MOD_LGUI)>;
+			};
+		};
+		keymap {
+			compatible = "zmk,keymap";
 
-        default_layer {
-// ---------------------------------------------------------------------------------------------------------------------------------
-// |  ESC  |  Q  |  W  |  E   |  R   |  T   |                                          |  Y   |  U    |  I    |  O   |   P   |   \  |
-// |  TAB  |  A  |  S  |  D   |  F   |  G   |                                          |  H   |  J    |  K    |  L   |   ;   |   '  |
-// | SHIFT |  Z  |  X  |  C   |  V   |  B   | L SHIFT | L SHIFT |  | LAYER 1 | L SHIFT |  N   |  M    |  ,    |  .   |   /   | CTRL |
-//                     | GUI  | DEL  | RET  |  SPACE  |   ESC   |  |   RET   |  SPACE  | TAB  | BSPC  | R-ALT |
-            bindings = <
-    &kp ESC   &kp Q &kp W &kp E &kp R &kp T                                                &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSLH
-    &kp TAB   &kp A &kp S &kp D &kp F &kp G                                                &kp H &kp J  &kp K     &kp L   &kp SEMI &kp SQT
-    &kp LSHFT &kp Z &kp X &kp C &kp V &kp B &kp LSHFT &kp LSHFT        &mo 1    &kp LSHFT  &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp RCTRL
-                     &kp LGUI &kp DEL &kp RET &kp SPACE &kp ESC        &kp RET  &kp SPACE  &kp TAB &kp BSPC &kp RALT
-            >;
-
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
-        };
-        function_layer {
-// ---------------------------------------------------------------------------------------------------------------------------------
-// |       |      |BT_CLR|BTSEL0|BTSEL1|BTSEL2|                                         |      |      |      |      |      |      |
-// |       |      |      |BTSEL3|BTSEL4|      |                                         |      |      |      |      |      |      |
-// |       |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
-//                       |      |      |      |      |      |      |      |      |      |      |      |      |
-            bindings = <
-    &trans &trans &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2              &trans &trans &trans &trans &trans &trans
-    &trans &trans &trans     &bt BT_SEL 3 &bt BT_SEL 4 &trans                    &trans &trans &trans &trans &trans &trans
-    &trans &trans &trans &trans &trans &trans &trans &trans        &trans &trans &trans &trans &trans &trans &trans &trans
-                         &trans &trans &trans &trans &trans        &trans &trans &trans &trans &trans
-            >;
-
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
-        };
-    };
-};
+			default_layer {
+				label = "DEFAULT";
+				bindings = <
+				W_FIND &kp Z &kp R &kp L    &kp D    &kp W                                       &kp Y &kp P    &kp U     &kp X   &kp Q    &kp BSLH
+				W_COPY &pdw  &kp N &kp T    &ndw     &kp C                                       &kp B &kp I    &kp E     &kp O   &kp A    &kp GRAVE
+				W_UNDO &kp K &kp V &kp M    &kp F    &kp G ALT_ESC   WIN_TSK     WIN_TSK ALT_ESC &kp J &kp SEMI &kp COMMA &kp DOT &kp FSLH &kp SQT
+													&kp LGUI SFT_ENT  &mo 2 &kp SPACE CTL_BSP     &kp TAB SFT_ENT &mo 3 &kp DEL  &kp CAPS
+				>;
+				
+			};
+			windows_layer {
+				label = "OSX";
+				bindings = <
+				FIND &kp Z &kp R &kp L    &kp D    &kp W                                           &kp Y &kp P    &kp U     &kp X   &kp Q    &kp BSLH
+				COPY &pd   &kp N &kp T    &nd      &kp C                                           &kp B &kp I    &kp E     &kp O   &kp A    &kp GRAVE
+				UNDO &kp K &kp V &kp M    &kp F    &kp G ALT_ESC   MSN_CTL       MSN_CTL ALT_ESC   &kp J &kp SEMI &kp COMMA &kp DOT &kp FSLH &kp SQT
+												&kp LCTL SFT_ENT  &mo 2 &kp SPACE  CMD_BSP       &kp TAB SFT_ENT   &mo 3 &kp DEL  &kp CAPS
+				>;
+			};
+			lower_layer {
+				label = "LOWER";
+				bindings = <
+				&kp TAB &kp STAR     &kp FSLH     &kp PLUS    &kp MINUS  &kp EQUAL                                 &kp PIPE  &kp LBRC  &kp RBRC &kp AT    &kp EXCL  &kp GRAVE
+				&kp RET &kp LEFT     &kp UP       &kp DOWN    &kp RIGHT  &trans                                    &kp BSLH  &kp LPAR  &kp RPAR &kp DLLR  &kp HASH  &kp TILDE
+				&kp ESC &kp SHFT_L   &kp CT_SH_L  &kp CT_SH_R &kp SHFT_R &kp C_NEXT &trans &trans    &trans &trans &kp UNDER &kp LBKT  &kp RBKT &kp CARET &kp PRCNT &kp AMPS
+																					&trans      &trans     &trans     &trans &trans    &trans &trans &trans    &trans  &trans
+				>;
+			};
+			raise_layer {
+				label = "RAISE";
+				bindings = <
+				&trans     &kp F1     &kp F2     &kp F3       &kp F4 &kp F5                                              &kp F6 &kp F7   &kp F8 &kp F9   &kp F10   &kp F11
+				&trans     &kp N1     &kp N2     &kp N3       &kp N4 &kp N5                                              &kp N6 &kp N7   &kp N8 &kp N9   &kp N0    &kp F12
+				&bt BT_CLR &bt BT_PRV &bt BT_NXT &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &trans &trans      &to 0  &to 1  &tog 1 &kp LEFT &kp UP &kp DOWN &kp RIGHT &kp ESC
+																				&trans       &trans       &trans       &trans &trans      &trans &trans &trans &trans   &ext_power EP_OFF
+				>;
+			};
+		};
+	};
