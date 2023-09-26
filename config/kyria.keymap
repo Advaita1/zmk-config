@@ -32,8 +32,8 @@
 #define CTL_BSP &ht LCTL BSPC
 
 // Modifiers
-#define SHFT_R LS(RIGHT)
-#define SHFT_L LS(LEFT)
+#define CTRL_R CT(RIGHT)
+#define CTRL_L CT(LEFT)
 #define CT_SH_R LC(LS(RIGHT))
 #define CT_SH_L LC(LS(LEFT))
 
@@ -108,7 +108,7 @@
 				bindings = <
 				&kp TAB &kp STAR     &kp FSLH     &kp PLUS    &kp MINUS  &kp EQUAL                                 &kp PIPE  &kp LBRC  &kp RBRC &kp AT    &kp EXCL  &kp GRAVE
 				&kp RET &kp LEFT     &kp UP       &kp DOWN    &kp RIGHT  &trans                                    &kp BSLH  &kp LPAR  &kp RPAR &kp DLLR  &kp HASH  &kp TILDE
-				&kp ESC &kp SHFT_L   &kp CT_SH_L  &kp CT_SH_R &kp SHFT_R &kp C_NEXT &trans &trans    &trans &trans &kp UNDER &kp LBKT  &kp RBKT &kp CARET &kp PRCNT &kp AMPS
+				&kp ESC &kp CTRL_L   &kp CT_SH_L  &kp CT_SH_R &kp CTRL_R &kp C_NEXT &trans &trans    &trans &trans &kp UNDER &kp LBKT  &kp RBKT &kp CARET &kp PRCNT &kp AMPS
 																					&trans      &trans     &trans     &trans &trans    &trans &trans &trans    &trans  &trans
 				>;
 			};
