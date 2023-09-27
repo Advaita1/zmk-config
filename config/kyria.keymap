@@ -32,8 +32,8 @@
 #define CTL_BSP &ht LCTL BSPC
 
 // Modifiers
-#define CTRL_R CT(RIGHT)
-#define CTRL_L CT(LEFT)
+#define CTRL_R LC(RIGHT)
+#define CTRL_L LC(LEFT)
 #define CT_SH_R LC(LS(RIGHT))
 #define CT_SH_L LC(LS(LEFT))
 
